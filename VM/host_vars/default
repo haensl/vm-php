@@ -1,0 +1,9 @@
+mysql_user: root
+mysql_pass: root
+mysql_db: vm-php
+mysql_tables_file: tables.sql
+display_errors: 1
+display_startup_errors: 1
+mailhog_binary_url: https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64
+http_root_src: app/src
+http_root_qa: app/dist

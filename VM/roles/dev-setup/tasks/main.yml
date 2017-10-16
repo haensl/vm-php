@@ -1,0 +1,98 @@
+---
+# Tweak dev setup
+
+- name: Clear server root
+  file:
+    path: /var/www
+    state: absent
+
+- name: Ensure server root exists
+  file:
+    path: /var/www
+    state: directory
+
+- name: Clear enabled sites
+  file:
+    path: /etc/apache2/sites-enabled
+    state: absent
+
+- name: Ensure sites-enabled directory exists
+  file:
+    path: /etc/apache2/sites-enabled
+    state: directory
+
+- name: Link src
+  file:
+    src: '/vagrant/{{ http_root_src }}'
+    dest: /var/www/dev
+    state: link
+
+- name: Link qa
+  file:
+    src: '/vagrant/{{ http_root_qa }}'
+    dest: /var/www/qa
+    state: link
+
+- name: Add development config
+  copy:
+    src: dev.conf
+    dest: /etc/apache2/sites-available/dev.conf
+
+- name: Add qa config
+  copy:
+    src: qa.conf
+    dest: /etc/apache2/sites-available/qa.conf
+
+- name: Add ports config
+  copy:
+    src: ports.conf
+    dest: /etc/apache2/ports.conf
+  notify: Restart Apache2
+
+- name: Enable dev site
+  file:
+    src: /etc/apache2/sites-available/dev.conf
+    dest: /etc/apache2/sites-enabled/dev.conf
+    state: link
+  notify: Restart Apache2
+
+- name: Enable qa site
+  file:
+    src: /etc/apache2/sites-available/qa.conf
+    dest: /etc/apache2/sites-enabled/qa.conf
+    state: link
+  notify: Restart Apache2
+
+- name: Install PDO driver
+  apt:
+    name: 'php7.0-mysql'
+    state: installed
+  notify: Restart Apache2
+
+- name: Create database
+  mysql_db:
+    login_user: '{{ mysql_user }}'
+    login_password: '{{ mysql_pass }}'
+    name: '{{ mysql_db }}'
+    state: present
+
+- name: Copy db tables file
+  copy:
+    src: '{{ mysql_tables_file }}'
+    dest: /tmp
+
+- name: Create tables
+  mysql_db:
+    login_user: '{{ mysql_user }}'
+    login_password: '{{ mysql_pass }}'
+    name: '{{ mysql_db }}'
+    state: import
+    target: '/tmp/{{ mysql_tables_file }}'
+  notify: Remove db tables file
+
+- name: Set sendmail path to mailhog
+  lineinfile:
+    dest: /etc/php/7.0/apache2/php.ini
+    regexp: ^sendmail_path =
+    line: 'sendmail_path = /opt/mailhog/mhsendmail'
+  notify: Restart Apache2

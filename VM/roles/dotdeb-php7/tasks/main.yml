@@ -1,0 +1,15 @@
+---
+  - name: Install https transports
+    apt:
+      name: apt-transport-https
+
+  - name: Add dotdeb repository key
+    apt_key:
+      url: "http://www.dotdeb.org/dotdeb.gpg"
+      state: present
+
+  - name: Add dotdeb to sources list
+    apt_repository:
+      repo: "deb http://packages.dotdeb.org jessie all"
+      state: "present"
+      update_cache: yes

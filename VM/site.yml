@@ -1,0 +1,14 @@
+#!usr/bin/env ansible-playbook
+---
+
+- name: vm-php
+  hosts: default
+  become: yes
+  roles:
+    - role: dotdeb-php7
+    - role: geerlingguy.apache
+    - role: geerlingguy.mysql
+    - role: geerlingguy.php
+    - role: geerlingguy.exim
+    - role: geerlingguy.mailhog
+    - role: dev-setup
