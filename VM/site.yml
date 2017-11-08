@@ -2,7 +2,7 @@
 ---
 
 - name: vm-php
-  hosts: default
+  hosts: vm-php
   become: yes
   roles:
     - role: dotdeb-php7

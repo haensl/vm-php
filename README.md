@@ -2,6 +2,8 @@
 
 ##### PHP project skeleton.
 
+![Intro](intro.gif)
+
 Vagrant box featuring:
 - Debian Jessie
 - Apache
@@ -24,6 +26,7 @@ Vagrant box featuring:
 
     mailhog: `http://localhost:8025`
 4. enjoy.
+
 
 ## Requirements
 
@@ -74,6 +77,7 @@ Site configurations can be adjusted as needed, see [VM/roles/dev-setup/files/dev
 
 Ports can be adjusted via [VM/roles/dev-setup/files/ports.conf](VM/roles/dev-setup/files/ports.conf).
 
+
 ## Credits
 
 [Jeff Geerling](https://github.com/geerlingguy) for his awesome Ansible roles.
@@ -81,3 +85,9 @@ Ports can be adjusted via [VM/roles/dev-setup/files/ports.conf](VM/roles/dev-set
 [Ansible](https://github.com/ansible) for their awesome configuration management tool.
 
 [Hashicorp](https://github.com/hashicorp) for their awesome virtualization managment tool.
+
+##
+
+
+#### [CHANGELOG](CHANGELOG.md)
+#### [LICENSE](LICENSE)
